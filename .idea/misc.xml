@@ -11,9 +11,7 @@
       <set>
         <option value="$PROJECT_DIR$/Controller/pom.xml" />
         <option value="$PROJECT_DIR$/model-game-conrtoller/pom.xml" />
-        <option value="$PROJECT_DIR$/web-game-control/pom.xml" />
         <option value="$PROJECT_DIR$/web-game-controlle/pom.xml" />
-        <option value="$PROJECT_DIR$/web-game-controller/pom.xml" />
       </set>
     </option>
   </component>
