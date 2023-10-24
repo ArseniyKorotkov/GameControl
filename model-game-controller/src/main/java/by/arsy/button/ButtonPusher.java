@@ -1,18 +1,15 @@
 package by.arsy.button;
 
 import by.arsy.p2entity.KeyboardButtonEntity;
+import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 
-public final class ButtonPusher {
+@Component
+public class ButtonPusher {
     private final static Robot robot = SingleRobot.ROBOT.getRobot();
-    private final static ButtonPusher button = new ButtonPusher();
-
-    private ButtonPusher() {
-
-    }
 
     public void push(KeyboardButtonEntity keyboardButton) {
         try {
@@ -45,9 +42,4 @@ public final class ButtonPusher {
             e.printStackTrace();
         }
     }
-
-    public static ButtonPusher getInstance() {
-        return button;
-    }
-
 }

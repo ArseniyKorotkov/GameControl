@@ -1,31 +1,34 @@
-package by.arsy.p5servlet.usageApplicatonServlet.menuContent;
+package by.arsy.p5servlet.usageApplicatonController.menuContent;
 
 import by.arsy.p2entity.ControlButton;
 import by.arsy.p2entity.KeyboardButtonEntity;
 import by.arsy.p2entity.User;
 import by.arsy.p4service.ButtonService;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
 
-@WebServlet("/save_button_settings")
-public class SaveButtonSettingsServlet extends HttpServlet {
+@Controller
+@RequestMapping("/save_button_settings")
+public class SaveButtonSettingsController {
 
     private static User user;
-    private final ButtonService service = ButtonService.getInstance();
     private static final HashSet<KeyboardButtonEntity> CONTROL_RATIO = new HashSet<>();
     private static final ArrayList<String[]> responseArray = new ArrayList<>();
     private static final String BUTTON_PREFIX = "VK_";
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    @Autowired
+    private ButtonService buttonService;
+
+    @RequestMapping(method = RequestMethod.POST)
+    public String save(HttpServletRequest req) {
         clearResults(req);
 
         Arrays.stream(ControlButton.values())
@@ -35,7 +38,7 @@ public class SaveButtonSettingsServlet extends HttpServlet {
 
         req.getSession().setAttribute("is_old_values_buttons", false);
         req.getSession().setAttribute("answers_message", responseArray);
-        resp.sendRedirect("console_settings");
+        return "redirect:/console_settings";
     }
 
     private void clearResults(HttpServletRequest req) {
@@ -55,7 +58,7 @@ public class SaveButtonSettingsServlet extends HttpServlet {
 
     private void checkBeforeSend() {
         if (CONTROL_RATIO.size() == ControlButton.values().length) {
-            responseArray.addAll(service.saveConsoleButtonsValues(CONTROL_RATIO));
+            responseArray.addAll(buttonService.saveConsoleButtonsValues(CONTROL_RATIO));
         } else {
             responseArray.add(new String[]{"Not save.", " Have double of buttons"});
         }

@@ -14,11 +14,6 @@ public class WebConfigure implements WebMvcConfigurer {
 
 
     @Bean
-    public String a(){
-        return "aa";
-    }
-
-    @Bean
     public InternalResourceViewResolver templateResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setPrefix("/WEB-INF/jsp/");

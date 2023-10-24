@@ -12,7 +12,7 @@
         <table>
             <tr>
 
-                <td>.</td>
+                <td colspan="1"/>
 
                 <td>
                     <select name="button_up" style="width:180px;height:120px">
@@ -32,7 +32,7 @@
                     </select>
                 </td>
 
-                <td>.</td>
+                <td colspan="1"/>
 
                 <td>
                     <select name="button_a" style="width:180px;height:120px">

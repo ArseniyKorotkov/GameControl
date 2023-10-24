@@ -1,35 +1,34 @@
-package by.arsy.p6filter;
+package by.arsy.p5servlet.usageApplicatonController.menuContent;
 
 import by.arsy.p2entity.ControlButton;
 import by.arsy.p2entity.KeyboardButtonEntity;
 import by.arsy.p2entity.User;
 import by.arsy.p4service.ButtonService;
-import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Optional;
 
-@WebFilter({"/console", "/console_settings"})
-public class SettingButtonFilter implements Filter {
+@Controller
+@RequestMapping("/settings_button")
+public class ButtonSettingsIncludeController {
 
     private static final HashMap<Integer, HashMap<String, Optional<KeyboardButtonEntity>>> BUTTONS_VALUES = new HashMap<>();
-    private final ButtonService service = ButtonService.getInstance();
+    @Autowired
+    private ButtonService buttonService;
 
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpSession session = ((HttpServletRequest) servletRequest).getSession();
+    @RequestMapping(method = RequestMethod.GET)
+    public String setButtonsValues(HttpServletRequest req) {
+        HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
-        takeButtonsValues(session, user.getId());
-        filterChain.doFilter(servletRequest, servletResponse);
-    }
-
-    private void takeButtonsValues(HttpSession session, int userId) {
+        int userId = user.getId();
         Optional<Object> isOldValuesButtons = Optional.ofNullable(session.getAttribute("is_old_values_buttons"));
         if (isOldValuesButtons.isEmpty() || !(boolean) isOldValuesButtons.get()) {
             if (!BUTTONS_VALUES.containsKey(userId)) {
@@ -38,15 +37,17 @@ public class SettingButtonFilter implements Filter {
             Arrays.stream(ControlButton.values())
                     .map(ControlButton::name)
                     .forEach(consoleButton -> {
-                        Optional<KeyboardButtonEntity> buttonValue = service.getButtonValue(userId, consoleButton);
-                        if(buttonValue.isPresent()) {
+                        Optional<KeyboardButtonEntity> buttonValue = buttonService.getButtonValue(userId, consoleButton);
+                        if (buttonValue.isPresent()) {
                             BUTTONS_VALUES.get(userId).put(consoleButton, buttonValue);
                             session.setAttribute(consoleButton.toLowerCase(Locale.ROOT) + "_value",
                                     buttonValue.get().name().split("_")[1]);
                         }
                     });
-            session.setAttribute("buttons_values",BUTTONS_VALUES);
+            session.setAttribute("buttons_values", BUTTONS_VALUES);
             session.setAttribute("is_old_values_buttons", true);
         }
+
+        return "usage/menu";
     }
 }

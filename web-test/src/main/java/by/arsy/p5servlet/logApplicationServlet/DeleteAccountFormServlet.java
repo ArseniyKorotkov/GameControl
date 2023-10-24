@@ -1,30 +1,29 @@
 package by.arsy.p5servlet.logApplicationServlet;
 
-import by.arsy.p1util.JspGuide;
 import by.arsy.p2entity.User;
 import by.arsy.p4service.UserService;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.io.IOException;
+@Controller
+@RequestMapping("/delete_account_form")
+public class DeleteAccountFormServlet {
 
-@WebServlet("/delete_account_form")
-public class DeleteAccountFormServlet extends HttpServlet {
+    @Autowired
+    private UserService service;
 
-    private final UserService service = UserService.getInstance();
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doPost(req, resp);
+    @RequestMapping(method = RequestMethod.GET)
+    public String goToPost(HttpServletRequest req) {
+        return goToForm(req);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @RequestMapping(method = RequestMethod.POST)
+    public String goToForm(HttpServletRequest req) {
         User user = (User) req.getSession().getAttribute("user");
         req.setAttribute("can_delete_users", service.findNamesCanDeleteUsers(user.getName()));
-        req.getRequestDispatcher(JspGuide.to("log", "delete_account_form")).forward(req, resp);
+        return "log/delete_account_form";
     }
 }

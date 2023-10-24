@@ -1,23 +1,22 @@
 package by.arsy.p5servlet.logApplicationServlet;
 
-import by.arsy.p1util.JspGuide;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@WebServlet("/registration_requests")
+@Controller
+@RequestMapping("/registration_requests")
 public class RegistrationRequestsServlet extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @RequestMapping(method = RequestMethod.GET)
+    public String registrationMasterVerdict(HttpServletRequest req) {
         ArrayList<String> installedUsersList = new ArrayList<>();
         Optional<Object> installedUsers = Optional.ofNullable(req.getServletContext().getAttribute("logg_users"));
         if (installedUsers.isPresent() && installedUsers.get() instanceof HashMap<?, ?>) {
@@ -25,6 +24,6 @@ public class RegistrationRequestsServlet extends HttpServlet {
             installedUsersList.addAll(installedUsersMap.keySet());
         }
         req.setAttribute("installed_users", installedUsersList);
-        req.getRequestDispatcher(JspGuide.to("log", "user_save")).forward(req, resp);
+        return "log/user_save";
     }
 }

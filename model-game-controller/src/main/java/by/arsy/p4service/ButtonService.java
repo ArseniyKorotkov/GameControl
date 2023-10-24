@@ -4,20 +4,20 @@ import by.arsy.p2entity.ControlButton;
 import by.arsy.p2entity.KeyboardButtonEntity;
 import by.arsy.p3dao.ControlPanelDao;
 import by.arsy.p8exception.OptionalNullException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 
+@Service
 public class ButtonService {
 
-    private static final ButtonService BUTTON_SERVICE = new ButtonService();
-
-    private ButtonService() {
-    }
+    @Autowired
+    private UserService userService;
 
     private final ControlPanelDao controlPanelDao = ControlPanelDao.getInstance();
-    private final UserService userService = UserService.getInstance();
 
     public ArrayList<KeyboardButtonEntity> getKeyboardButtonsArray() {
         return controlPanelDao.getAllButtonsValue();
@@ -63,13 +63,6 @@ public class ButtonService {
     public Optional<KeyboardButtonEntity> getButtonValue(Integer userId, String controlButton) {
         return controlPanelDao.getButtonValue(userId, ControlButton.valueOf(controlButton));
     }
-
-
-
-    public static ButtonService getInstance() {
-        return BUTTON_SERVICE;
-    }
-
 }
 
 

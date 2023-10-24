@@ -3,31 +3,35 @@ package by.arsy.p5servlet.logApplicationServlet;
 import by.arsy.p2entity.User;
 import by.arsy.p4service.ButtonService;
 import by.arsy.p4service.UserService;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet("/delete_account")
-public class DeleteAccountServlet extends HttpServlet {
+@Controller
+@RequestMapping("/delete_account")
+public class DeleteAccountServlet {
 
-    private final UserService userService = UserService.getInstance();
-    private final ButtonService buttonService = ButtonService.getInstance();
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ButtonService buttonService;
+
+    @RequestMapping(method = RequestMethod.POST)
+    public String deleteAccount(HttpServletRequest req) {
         User user = (User) req.getSession().getAttribute("user");
         ArrayList<String> findNamesCanDeleteUsers = userService.findNamesCanDeleteUsers(user.getName());
-        for(String name : findNamesCanDeleteUsers) {
-            if(req.getParameter(name + "_delete_account") != null) {
+        for (String name : findNamesCanDeleteUsers) {
+            if (req.getParameter(name + "_delete_account") != null) {
                 buttonService.deleteConsoleValuesFor(userService.getIdByName(name));
                 userService.deleteUserByName(name);
             }
         }
 
-        resp.sendRedirect("delete_account_form");
+        return "redirect:delete_account_form";
     }
 }

@@ -1,23 +1,25 @@
-package by.arsy.p5servlet.usageApplicatonServlet;
+package by.arsy.p5servlet.usageApplicatonController;
 
 import by.arsy.p2entity.User;
 import by.arsy.p4service.UserService;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import java.io.IOException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.Optional;
 
-@WebServlet("/check_enter")
-public class CheckEnterServlet extends HttpServlet {
 
-    private final UserService service = UserService.getInstance();
+@Controller
+@RequestMapping("/check_enter")
+public class CheckEnterController {
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    @Autowired
+    private UserService service;
+
+    @RequestMapping(method = RequestMethod.POST)
+    public String checkData(HttpServletRequest req) {
         HttpSession session = req.getSession();
         String name = req.getParameter("userName").trim();
         String password = req.getParameter("userPass");
@@ -28,15 +30,15 @@ public class CheckEnterServlet extends HttpServlet {
             } else {
                 session.setAttribute("pass_statement", "No such account");
             }
-            resp.sendRedirect("control");
+            return "redirect:control";
         } else if (service.getConnectUsers().containsKey(user.get().getId())) {
             session.setAttribute("pass_statement", "Account is already used");
-            resp.sendRedirect("control");
+            return "redirect:control";
         } else {
             session.setAttribute("pass_statement", "Account is into system");
             session.setAttribute("user", user.get());
             service.addUserToConnect(user.get());
-            resp.sendRedirect("menu");
+            return "redirect:menu";
         }
     }
 }

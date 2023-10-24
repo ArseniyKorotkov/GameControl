@@ -11,11 +11,11 @@
         <button type="submit" style="width:180px;height:60px">CONSOLE</button>
     </form>
 
-    <form action="console_settings" method="post">
+    <form action="console_settings" method="get">
         <button type="submit" style="width:180px;height:60px">CONSOLE SETTINGS</button>
     </form>
 
-    <form action="change_pass_form" method="post">
+    <form action="change_pass" method="get">
         <button type="submit" style="width:180px;height:60px">CHANGE PASSWORD</button>
     </form>
 

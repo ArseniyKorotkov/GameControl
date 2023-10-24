@@ -2,25 +2,25 @@ package by.arsy.p5servlet.logApplicationServlet;
 
 import by.arsy.p2entity.User;
 import by.arsy.p4service.UserService;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.io.IOException;
+@Controller
+@RequestMapping("/logout")
+public class LogoutServlet {
 
-@WebServlet("/logout")
-public class LogoutServlet extends HttpServlet {
+    @Autowired
+    private UserService service;
 
-    private final UserService service = UserService.getInstance();
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @RequestMapping(method = RequestMethod.POST)
+    public String logout(HttpServletRequest req) {
         HttpSession session = req.getSession();
         service.logoutUser((User) session.getAttribute("user"));
         req.getSession().invalidate();
-        resp.sendRedirect("control");
+        return "redirect:control";
     }
 }

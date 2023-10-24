@@ -3,6 +3,7 @@ package by.arsy.p3dao;
 import by.arsy.p1util.ConnectorManager;
 import by.arsy.p2entity.User;
 import by.arsy.p7coder.HashCoder;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,12 +12,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 
+@Component
 public final class UserDao {
-
-    private static final UserDao userDao = new UserDao();
-
-    private UserDao() {
-    }
 
     private static final String CHECK_USER_SQL = """
             SELECT *
@@ -170,10 +167,5 @@ public final class UserDao {
                     result.getBoolean(4)));
         }
         return user;
-    }
-
-
-    public static UserDao getInstance() {
-        return userDao;
     }
 }

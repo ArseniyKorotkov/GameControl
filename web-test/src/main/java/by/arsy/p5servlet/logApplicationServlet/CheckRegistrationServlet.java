@@ -1,27 +1,29 @@
 package by.arsy.p5servlet.logApplicationServlet;
 
 import by.arsy.p4service.UserService;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.io.IOException;
 import java.util.HashMap;
 
-@WebServlet("/check_regis")
-public class CheckRegistrationServlet extends HttpServlet {
+@Controller
+@RequestMapping("/check_regis")
+public class CheckRegistrationServlet {
 
-    private final UserService service = UserService.getInstance();
     private static final HashMap<String, String> REQUESTS_FOR_LOG = new HashMap<>();
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @Autowired
+    private UserService service;
+
+    @RequestMapping(method = RequestMethod.GET)
+    public String checkRegistration(HttpServletRequest req) {
         String name = req.getParameter("userName").trim();
         String pass = req.getParameter("userPass");
         String answer;
-        if(service.haveName(name)) {
+        if (service.haveName(name)) {
             answer = "try another  name";
         } else {
             REQUESTS_FOR_LOG.put(name, pass);
@@ -31,7 +33,7 @@ public class CheckRegistrationServlet extends HttpServlet {
         }
         req.getServletContext().setAttribute("logg_users", REQUESTS_FOR_LOG);
         req.getSession().setAttribute("answer_for_request_log", answer);
-        resp.sendRedirect("registration_form");
+        return "redirect:registration_form";
 
     }
 }

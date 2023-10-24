@@ -1,28 +1,30 @@
 package by.arsy.p5servlet.logApplicationServlet;
 
 import by.arsy.p4service.UserService;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.io.IOException;
 import java.util.HashMap;
 
-@WebServlet("/user_save")
-public class UserSaveServlet extends HttpServlet {
+@Controller
+@RequestMapping("/user_save")
+public class UserSaveServlet {
 
-    private final UserService service = UserService.getInstance();
+    @Autowired
+    private UserService service;
+
     private static final String SAVE_PREFIX = "_save";
     private static final String MASTER_PREFIX = "_master";
     private static final String DELETE_PREFIX = "_delete";
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @RequestMapping(method = RequestMethod.GET)
+    public String savaUser(HttpServletRequest req) {
         HashMap<String, String> users = (HashMap<String, String>) req.getServletContext().getAttribute("logg_users");
-        for(String name : users.keySet()) {
-            if(needSaveName(req, name)) {
+        for (String name : users.keySet()) {
+            if (needSaveName(req, name)) {
                 service.saveUser(name, users.get(name), needMakeMaster(req, name));
                 users.remove(name);
             } else if (needDelete(req, name)) {
@@ -30,7 +32,7 @@ public class UserSaveServlet extends HttpServlet {
             }
         }
         req.getServletContext().setAttribute("logg_users", users);
-        resp.sendRedirect("registration_requests");
+        return "redirect:/registration_requests";
     }
 
     private boolean needSaveName(HttpServletRequest req, String name) {

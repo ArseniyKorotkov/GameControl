@@ -1,21 +1,22 @@
-package by.arsy.p5servlet.usageApplicatonServlet.menuContent;
+package by.arsy.p5servlet.usageApplicatonController.menuContent;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
-@WebServlet("/console_buttons_size")
-public class ConsoleButtonsSizeServlet extends HttpServlet {
+@Controller
+@RequestMapping("/console_buttons_size")
+public class ConsoleButtonsSizeServlet {
 
     private final static int SWITCH_SIZE = 20;
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    @RequestMapping(method = RequestMethod.POST)
+    public void changeSize(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession();
         int size = (int) session.getAttribute("control_buttons_size");
         if ("small".equals(req.getParameter("size")) && size > 100) {
