@@ -1,4 +1,4 @@
-package by.arsy.p5servlet.logApplicationServlet;
+package by.arsy.controller.logApplicationController;
 
 import jakarta.servlet.http.HttpServlet;
 import org.springframework.stereotype.Controller;

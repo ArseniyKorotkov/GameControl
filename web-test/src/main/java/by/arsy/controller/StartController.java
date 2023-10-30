@@ -1,7 +1,6 @@
-package by.arsy.p5servlet;
+package by.arsy.controller;
 
 import by.arsy.p4service.AppService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,10 +16,8 @@ public class StartController {
     private AppService appService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String firstVisit(HttpServletRequest req) {
-        HttpSession session = req.getSession();
+    public String firstVisit(HttpSession session) {
         session.setAttribute("answer_for_request_log", "");
-
         appService.activateTables();
         return "start";
     }

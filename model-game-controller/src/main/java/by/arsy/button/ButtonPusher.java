@@ -1,6 +1,7 @@
 package by.arsy.button;
 
 import by.arsy.p2entity.KeyboardButtonEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
@@ -9,7 +10,9 @@ import java.lang.reflect.Field;
 
 @Component
 public class ButtonPusher {
-    private final static Robot robot = SingleRobot.ROBOT.getRobot();
+
+    @Autowired
+    private Robot robot;
 
     public void push(KeyboardButtonEntity keyboardButton) {
         try {

@@ -38,14 +38,14 @@
 
                 <p> ${sessionScope.pass_statement} </p>
 
-                <button type="submit" style="width:120px;height:60px">LOGIN</button>
+                <button type="submit" style="width:180px;height:60px">LOGIN</button>
 
             </form>
 
 
             <tr>
                 <form action="registration_form" method="get">
-                    <button type="submit" style="width:120px;height:60px">REGISTRATION</button>
+                    <button type="submit" style="width:180px;height:60px">REGISTRATION</button>
                 </form>
             </tr>
 

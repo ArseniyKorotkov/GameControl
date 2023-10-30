@@ -1,13 +1,15 @@
 package by.arsy.p3dao;
 
-import by.arsy.p1util.ConnectorManager;
 import by.arsy.p7coder.HashCoder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
+@Component
 public class AppDao {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     private static final String CHECK_HAVE_TABLE_SQL = """
             SELECT * FROM pg_tables WHERE tablename = 'console_user';
@@ -29,7 +31,7 @@ public class AppDao {
                 user_button VARCHAR(32) ,
                 UNIQUE (user_id, user_button)
             );
-            
+                        
             INSERT INTO console_button (button) VALUES
             ('VK_ENTER'),
             ('VK_BACK_SPACE'),
@@ -221,18 +223,11 @@ public class AppDao {
             ('VK_UNDEFINED');
             """;
 
-    public static void activateTables() {
-        try (Connection connection = ConnectorManager.getConnection();
-             PreparedStatement activationCheck = connection.prepareStatement(CHECK_HAVE_TABLE_SQL);
-             PreparedStatement activationTables = connection.prepareStatement(ACTIVATION_TABLES_SQL)) {
+    public void activateTables() {
 
-            if(!activationCheck.executeQuery().next()) {
-                activationTables.setInt(1, HashCoder.getHash("master"));
-                activationTables.executeUpdate();
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+        boolean isHaveConsoleUserTable = jdbcTemplate.queryForList(CHECK_HAVE_TABLE_SQL).size() > 0;
+        if (!isHaveConsoleUserTable) {
+            jdbcTemplate.update(ACTIVATION_TABLES_SQL, 1, HashCoder.getHash("master"));
         }
     }
 

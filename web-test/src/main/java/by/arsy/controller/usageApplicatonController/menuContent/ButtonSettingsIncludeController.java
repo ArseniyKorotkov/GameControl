@@ -1,10 +1,9 @@
-package by.arsy.p5servlet.usageApplicatonController.menuContent;
+package by.arsy.controller.usageApplicatonController.menuContent;
 
 import by.arsy.p2entity.ControlButton;
 import by.arsy.p2entity.KeyboardButtonEntity;
 import by.arsy.p2entity.User;
 import by.arsy.p4service.ButtonService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,8 +24,7 @@ public class ButtonSettingsIncludeController {
     private ButtonService buttonService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String setButtonsValues(HttpServletRequest req) {
-        HttpSession session = req.getSession();
+    public String setButtonsValues(HttpSession session) {
         User user = (User) session.getAttribute("user");
         int userId = user.getId();
         Optional<Object> isOldValuesButtons = Optional.ofNullable(session.getAttribute("is_old_values_buttons"));

@@ -1,6 +1,5 @@
 package by.arsy.springConf;
 
-
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {

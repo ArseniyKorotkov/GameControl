@@ -281,7 +281,7 @@
                 <script>
                     $(document).ready(function() {
                         $("#small_button").click(function() {
-                            let sizeCode = "small";
+                            let changeSizeTo = "small";
                             <%@include file="/WEB-INF/jsp/usage/js/consoleSize.js" %>
                         });
                     });
@@ -298,7 +298,7 @@
                 <script>
                     $(document).ready(function() {
                         $("#big_button").click(function() {
-                            let sizeCode = "big";
+                            let changeSizeTo = "big";
                             <%@include file="/WEB-INF/jsp/usage/js/consoleSize.js" %>
                         });
                     });

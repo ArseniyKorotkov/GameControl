@@ -16,8 +16,8 @@ public class ButtonService {
 
     @Autowired
     private UserService userService;
-
-    private final ControlPanelDao controlPanelDao = ControlPanelDao.getInstance();
+    @Autowired
+    private ControlPanelDao controlPanelDao;
 
     public ArrayList<KeyboardButtonEntity> getKeyboardButtonsArray() {
         return controlPanelDao.getAllButtonsValue();

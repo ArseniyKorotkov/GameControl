@@ -4,6 +4,7 @@ import by.arsy.p1util.ConnectorManager;
 import by.arsy.p2entity.ControlButton;
 import by.arsy.p2entity.KeyboardButtonEntity;
 import by.arsy.p8exception.OptionalNullException;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,9 +13,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 
+@Component
 public class ControlPanelDao {
-
-    private static final ControlPanelDao CONTROL_PANEL_DAO = new ControlPanelDao();
 
     private static final String GET_BUTTON_VALUE_SQL = """
             SELECT button, user_id, user_button
@@ -51,10 +51,6 @@ public class ControlPanelDao {
             SET user_id = NULL, user_button= NULL
             WHERE user_id = ?
             """;
-
-
-    private ControlPanelDao() {
-    }
 
     public Optional<KeyboardButtonEntity> getButtonValue(Integer userId, ControlButton controlButton) {
         Optional<KeyboardButtonEntity> value = Optional.empty();
@@ -164,11 +160,6 @@ public class ControlPanelDao {
                 resultSet.getInt(2),
                 resultSet.getString(3)
         );
-    }
-
-
-    public static ControlPanelDao getInstance() {
-        return CONTROL_PANEL_DAO;
     }
 
 }

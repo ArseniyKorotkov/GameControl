@@ -1,7 +1,7 @@
     $.ajax({
         url: "console_buttons_size",
         type: "POST",
-        data: {size: sizeCode},
+        data: {changeSizeTo: changeSizeTo},
         success: function(data) {
             let s = data.control_buttons_size;
             $(".button_class").css("width", s + "px");

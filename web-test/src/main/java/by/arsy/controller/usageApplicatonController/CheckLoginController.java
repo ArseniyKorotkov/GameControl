@@ -1,28 +1,29 @@
-package by.arsy.p5servlet.usageApplicatonController;
+package by.arsy.controller.usageApplicatonController;
 
 import by.arsy.p2entity.User;
 import by.arsy.p4service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.Optional;
 
 
 @Controller
 @RequestMapping("/check_enter")
-public class CheckEnterController {
+public class CheckLoginController {
 
     @Autowired
     private UserService service;
 
     @RequestMapping(method = RequestMethod.POST)
-    public String checkData(HttpServletRequest req) {
-        HttpSession session = req.getSession();
-        String name = req.getParameter("userName").trim();
-        String password = req.getParameter("userPass");
+    public String checkData(@RequestParam("userName") String name,
+                            @RequestParam("userPass") String password,
+                            HttpSession session) {
+        name = name.trim();
         Optional<User> user = service.getUser(name, password);
         if (user.isEmpty()) {
             if (service.haveName(name)) {

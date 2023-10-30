@@ -1,4 +1,4 @@
-package by.arsy.p6filter;
+package by.arsy.filter;
 
 
 import by.arsy.p4service.UserService;

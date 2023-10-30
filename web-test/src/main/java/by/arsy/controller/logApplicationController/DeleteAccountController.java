@@ -1,4 +1,4 @@
-package by.arsy.p5servlet.logApplicationServlet;
+package by.arsy.controller.logApplicationController;
 
 import by.arsy.p2entity.User;
 import by.arsy.p4service.ButtonService;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/delete_account")
-public class DeleteAccountServlet {
+public class DeleteAccountController {
 
     @Autowired
     private UserService userService;

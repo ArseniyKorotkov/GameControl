@@ -1,16 +1,24 @@
 
     let isChecked = $("#check_" + buttonName).is(":checked");
+    buttonName = "button_" + buttonName;
+
+    let params = {
+        buttonName: buttonName,
+        checkBox: isChecked
+    };
 
     $.ajax({
         url: "console",
         type: "POST",
-        data: {"button_name" : "button_" + buttonName, "check_box" : isChecked},
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify(params),
 
         success: function(data) {
-            if(data.button_color == 'blue') {
-                $("#button_" + buttonName).css("background-color", "blue");
+            if(data.button_color) {
+                $("#" + buttonName).css("background-color", "blue");
             } else {
-                 $("#button_" + buttonName).css("background-color", "");
+                $("#" + buttonName).css("background-color", "");
             }
         }
     });

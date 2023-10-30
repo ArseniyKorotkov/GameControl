@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags/form" %>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <html>
 <head>
@@ -8,16 +10,23 @@
 <body>
 
 
-    <form action="save_button_settings" method="post">
+    <spring:form action="save_button_settings" method="post" modelAttribute="controlButtonDto">
         <table>
-            <tr>
+            <c:forEach begin="0" end="9" step="1" var="counter">
+                <c:if test="${counter == 4}">
+                    <tr>
+                </c:if>
 
-                <td colspan="1"/>
+                <c:if test="${counter == 0 || counter == 1}">
+                    <td colspan="1"/>
+                </c:if>
 
                 <td>
-                    <select name="button_up" style="width:180px;height:120px">
-                        <c:if test="${not empty sessionScope.button_up_value}">
-                            <option>${sessionScope.button_up_value}</option>
+                    <spring:input type="hidden" path="buttonDtos[${counter}].name" value="${buttonsNameCodes.get(counter)}"/>
+                    <spring:input id="${buttonsNameCodes.get(counter)}_value" type="hidden" path="buttonDtos[${counter}].value"/>
+                    <select id="${buttonsNameCodes.get(counter)}_select" style="width:180px;height:120px">
+                        <c:if test="${not empty sessionScope[buttonsNameCodes.get(counter).concat('_value')]}">
+                            <option>${sessionScope[buttonsNameCodes.get(counter).concat('_value')]}</option>
                         </c:if>
                         <c:forEach var="key_button" items="${requestScope.keyboard_buttons}">
                             <option>${key_button.name().substring(3)}
@@ -30,180 +39,28 @@
                             </option>
                         </c:forEach>
                     </select>
+
+                    <script>
+                        $(document).ready(function() {
+                            $("#save_button").click(function() {
+                                var selectElement = document.getElementById('${buttonsNameCodes.get(counter)}_select');
+                                var inputElement = document.getElementById('${buttonsNameCodes.get(counter)}_value');
+                                var selectedValue = selectElement.value;
+                                inputElement.value = selectedValue;
+                            });
+                        });
+                    </script>
                 </td>
 
-                <td colspan="1"/>
-
-                <td>
-                    <select name="button_a" style="width:180px;height:120px">
-                        <c:if test="${not empty sessionScope.button_a_value}">
-                            <option>${sessionScope.button_a_value}</option>
-                        </c:if>
-                        <c:forEach var="key_button" items="${requestScope.keyboard_buttons}">
-                            <option>${key_button.name().substring(3)}
-                                <c:if test="${key_button.isUsed() && connect_users.containsKey(key_button.getUserId().get()) &&
-                                key_button.getUserId().get() != sessionScope.user.getId()}">
-                                    <h1>
-                                        (used '${connect_users.get(key_button.userId.get()).getName()}' player)
-                                    </h1>
-                                </c:if>
-                            </option>
-                        </c:forEach>
-                    </select>
-                </td>
-
-                <td>
-                    <select name="button_b" style="width:180px;height:120px">
-                        <c:if test="${not empty sessionScope.button_b_value}">
-                            <option>${sessionScope.button_b_value}</option>
-                        </c:if>
-                        <c:forEach var="key_button" items="${requestScope.keyboard_buttons}">
-                            <option>${key_button.name().substring(3)}
-                                <c:if test="${key_button.isUsed() && connect_users.containsKey(key_button.getUserId().get()) &&
-                                key_button.getUserId().get() != sessionScope.user.getId()}">
-                                    <h1>
-                                        (used '${connect_users.get(key_button.userId.get()).getName()}' player)
-                                    </h1>
-                                </c:if>
-                            </option>
-                        </c:forEach>
-                    </select>
-                </td>
-
-                <td>
-                    <select name="button_c" style="width:180px;height:120px">
-                        <c:if test="${not empty sessionScope.button_c_value}">
-                            <option>${sessionScope.button_c_value}</option>
-                        </c:if>
-                        <c:forEach var="key_button" items="${requestScope.keyboard_buttons}">
-                            <option>${key_button.name().substring(3)}
-                                <c:if test="${key_button.isUsed() && connect_users.containsKey(key_button.getUserId().get()) &&
-                                key_button.getUserId().get() != sessionScope.user.getId()}">
-                                    <h1>
-                                        (used '${connect_users.get(key_button.userId.get()).getName()}' player)
-                                    </h1>
-                                </c:if>
-                            </option>
-                        </c:forEach>
-                    </select>
-                </td>
-            </tr>
+            </c:forEach>
 
             <tr>
                 <td>
-                    <select name="button_left" style="width:180px;height:120px">
-                        <c:if test="${not empty sessionScope.button_left_value}">
-                            <option>${sessionScope.button_left_value}</option>
-                        </c:if>
-                        <c:forEach var="key_button" items="${requestScope.keyboard_buttons}">
-                            <option>${key_button.name().substring(3)}
-                                <c:if test="${key_button.isUsed() && connect_users.containsKey(key_button.getUserId().get()) &&
-                                key_button.getUserId().get() != sessionScope.user.getId()}">
-                                    <h1>
-                                        (used '${connect_users.get(key_button.userId.get()).getName()}' player)
-                                    </h1>
-                                </c:if>
-                            </option>
-                        </c:forEach>
-                    </select>
-                </td>
-
-                <td>
-                    <select name="button_down" style="width:180px;height:120px">
-                        <c:if test="${not empty sessionScope.button_down_value}">
-                            <option>${sessionScope.button_down_value}</option>
-                        </c:if>
-                        <c:forEach var="key_button" items="${requestScope.keyboard_buttons}">
-                            <option>${key_button.name().substring(3)}
-                                <c:if test="${key_button.isUsed() && connect_users.containsKey(key_button.getUserId().get()) &&
-                                key_button.getUserId().get() != sessionScope.user.getId()}">
-                                    <h1>
-                                        (used '${connect_users.get(key_button.userId.get()).getName()}' player)
-                                    </h1>
-                                </c:if>
-                            </option>
-                        </c:forEach>
-                    </select>
-                </td>
-
-                <td>
-                    <select name="button_right" style="width:180px;height:120px">
-                        <c:if test="${not empty sessionScope.button_right_value}">
-                            <option>${sessionScope.button_right_value}</option>
-                        </c:if>
-                        <c:forEach var="key_button" items="${requestScope.keyboard_buttons}">
-                            <option>${key_button.name().substring(3)}
-                                <c:if test="${key_button.isUsed() && connect_users.containsKey(key_button.getUserId().get()) &&
-                                key_button.getUserId().get() != sessionScope.user.getId()}">
-                                    <h1>
-                                        (used '${connect_users.get(key_button.userId.get()).getName()}' player)
-                                    </h1>
-                                </c:if>
-                            </option>
-                        </c:forEach>
-                    </select>
-                </td>
-
-                <td>
-                    <select name="button_d" style="width:180px;height:120px">
-                        <c:if test="${not empty sessionScope.button_d_value}">
-                            <option>${sessionScope.button_d_value}</option>
-                        </c:if>
-                        <c:forEach var="key_button" items="${requestScope.keyboard_buttons}">
-                            <option>${key_button.name().substring(3)}
-                                <c:if test="${key_button.isUsed() && connect_users.containsKey(key_button.getUserId().get()) &&
-                                key_button.getUserId().get() != sessionScope.user.getId()}">
-                                    <h1>
-                                        (used '${connect_users.get(key_button.userId.get()).getName()}' player)
-                                    </h1>
-                                </c:if>
-                            </option>
-                        </c:forEach>
-                    </select>
-                </td>
-
-                <td>
-                    <select name="button_e" style="width:180px;height:120px">
-                        <c:if test="${not empty sessionScope.button_e_value}">
-                            <option>${sessionScope.button_e_value}</option>
-                        </c:if>
-                        <c:forEach var="key_button" items="${requestScope.keyboard_buttons}">
-                            <option>${key_button.name().substring(3)}
-                                <c:if test="${key_button.isUsed() && connect_users.containsKey(key_button.getUserId().get()) &&
-                                key_button.getUserId().get() != sessionScope.user.getId()}">
-                                    <h1>
-                                        (used '${connect_users.get(key_button.userId.get()).getName()}' player)
-                                    </h1>
-                                </c:if>
-                            </option>
-                        </c:forEach>
-                    </select>
-                </td>
-                <td>
-                    <select name="button_f" style="width:180px;height:120px">
-                        <c:if test="${not empty sessionScope.button_f_value}">
-                            <option>${sessionScope.button_f_value}</option>
-                        </c:if>
-                        <c:forEach var="key_button" items="${requestScope.keyboard_buttons}">
-                            <option>${key_button.name().substring(3)}
-                                <c:if test="${key_button.isUsed() && connect_users.containsKey(key_button.getUserId().get()) &&
-                                key_button.getUserId().get() != sessionScope.user.getId()}">
-                                    <h1>
-                                        (used '${connect_users.get(key_button.userId.get()).getName()}' player)
-                                    </h1>
-                                </c:if>
-                            </option>
-                        </c:forEach>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button type="submit" style="width:180px;height:60px">SAVE</button>
+                    <button id="save_button" type="submit" style="width:180px;height:60px">SAVE</button>
                 </td>
             </tr>
         </table>
-    </form>
+    </spring:form>
 
     <form action="menu" method="get">
         <button type="submit" style="width:180px;height:60px">BACK</button>
